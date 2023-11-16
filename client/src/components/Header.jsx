@@ -4,7 +4,7 @@ import {Link} from "react-router-dom"
 function Header() {
   return (
     <>
-    <div className="p-8 flex  justify-between items-center bg-black shadow-md  text-white ">
+    <div className="p-8 flex  justify-between items-center bg-gradient-to-b from-black to-gray-800  shadow-lg  text-white ">
         <div>
             <h1 className="font-semibold text-xl">Registration.website</h1>
         </div>

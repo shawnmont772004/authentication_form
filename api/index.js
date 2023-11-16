@@ -8,7 +8,7 @@ dotenv.config();
 const app=express()
 
 app.use(express.json());
-
+ 
 mongoose
     .connect(process.env.REG_DB)
     .then(()=>{console.log("Connected to the database");})
@@ -21,3 +21,14 @@ app.listen(3000,() => {
 
 app.use('/api/user',userRouter);
 app.use('/api/auth',authRouter);
+
+app.use((err,req,res,next)=>{
+    const statusCode= err.statusCode || 500;
+    const message= err.message || "internal server error";
+    res.status(statusCode).json({
+        succes:false,
+       statusCode,
+       message
+
+    });
+});
