@@ -1,12 +1,12 @@
 import bcryptjs from "bcryptjs";
 import User from "../models/user.model.js";
 export const authcontroller= async(req,res,next)=>{
-    const {fname,lname,username,email,password,phone}=req.body;
-    const hashedPassword=bcryptjs.hashSync(password,10);
-    const typedUser=new  User({firstName:fname,lastName:lname,userName:username,email:email,password:hashedPassword,phoneNo:phone});
+    const {f,l,u,e,p,pno}=req.body;
+    const hashedPassword=bcryptjs.hashSync(p,10);
+    const typedUser=new  User({firstName:f,lastName:l,userName:u,email:e,password:hashedPassword,phoneNo:pno});
     try{
         await typedUser.save();
-        res.status(201).send("User create dsuccessfully");
+        res.status(201).json("User created successfully");
     }
     catch(error)
     {
