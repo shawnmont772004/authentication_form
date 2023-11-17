@@ -24,12 +24,12 @@ export const authsignincontroller=async(req,res,next)=>{
         const verifyUser= await User.findOne({email : mail});
     if (!verifyUser)
     {
-        next(errorHandler(404,"User not found"));
+        return next(errorHandler(404,"User not found"));
     }
     const decryptpass= bcryptjs.compareSync(pass,verifyUser.password);
     if(!decryptpass)
     {
-        next(errorHandler(404,"Wrong password"));
+        return next(errorHandler(404,"Wrong password"));
     }
     const token=jwt.sign({id:verifyUser._id},process.env.JWT_AUTH_TOKEN_GENERATE_KEY);// to generate an auth token for authentication
     const {password:p,...rest}=verifyUser._doc;
