@@ -6,6 +6,7 @@ import {
   signinSuccess,
   signinFail,
 } from '../redux/user/userSlice.js';
+import OAuth from "../components/OAuth.jsx";
 
 function Signin() {
   const [formData, setFormData] = useState({});
@@ -30,7 +31,7 @@ function Signin() {
     try {
       //setLoading(true);
       disp(signinStart());
-      const res = await fetch("/api/auth/signin", {
+      const res = await fetch('api/auth/signin', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -54,7 +55,7 @@ function Signin() {
     } catch (error) {
       //setLoading(false);
       //setError(error.message);
-      disp(signinFail(data.message));
+      disp(signinFail(error.message));
     }
   };
 
@@ -80,12 +81,13 @@ function Signin() {
             className="border p-2 border-gray-300 rounded-md focus:outline-gray-500"
           />
           <button
-            type="submit"
-            className="p-2 bg-black  text-white text-lg rounded-lg hover:bg-gray-700"
+            type="text"
+            className="p-2 bg-black  text-white text-md rounded-lg hover:bg-gray-700"
             disabled={loading}
           >
-            {loading ? 'Loading...' : 'Sign in'}
+            {loading ? 'Loading...' : 'sign in'}
           </button>
+          <OAuth />
         </form>
         <div className="text-sm text-red-600 flex justify-between p-1 mt-1">
           <p>Don't have an account?</p>

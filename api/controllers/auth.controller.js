@@ -32,9 +32,9 @@ export const authsignincontroller=async(req,res,next)=>{
         return next(errorHandler(404,"Wrong password"));
     }
     const token=jwt.sign({id:verifyUser._id},process.env.JWT_AUTH_TOKEN_GENERATE_KEY);// to generate an auth token for authentication
-    const {password:p,...rest}=verifyUser._doc;
+    const {password:p, phoneNo:pno, ...rest} =  verifyUser._doc;
     res.
-    cookie("auth_token",token,{httpOnly:true})// to set a cookie
+    cookie("auth_token",token,{httpOnly:true})  
     .status(500)
     .json(rest);
 
@@ -45,4 +45,47 @@ export const authsignincontroller=async(req,res,next)=>{
         next(error);
     }
     
+}
+
+export const googleAuthController=async(req,res,next)=>{
+    try{
+        const existUser= await User.findOne({email:req.body.Email});
+        if(existUser){
+            const token= jwt.sign({id:existUser._id},process.env.JWT_AUTH_TOKEN_GENERATE_KEY);
+            const {password : pp, phoneNo:pn , ...rest} = existUser._doc
+            res
+            .cookie("auth_google_token",token,{httpOnly:true})
+            .status(200)
+            .json(rest);
+        }
+        else{
+            const uname=req.body.Name.split(" ").join(" ").slice(-8)+Math.random().toString(36).slice(-2);
+            const genpass= Math.random().toString(36).slice(-8);
+            const newUser=new User({
+                email:req.body.Email,
+                password: bcryptjs.hashSync(genpass,10),
+                userName: uname,
+                firstName:req.body.FName,
+                lastName:req.body.LName,
+                profilePic:req.body.Photo
+            })
+            try{
+                await newUser.save();
+                //res.status(201).json("User created successfully"); cant send multiplr json
+            }
+            catch(error)
+            {//res.status(500).json(error);
+                next(error);
+            }
+            const token=jwt.sign({id:newUser._id},process.env.JWT_AUTH_TOKEN_GENERATE_KEY);
+            const {password : pp , ...rest} = newUser._doc;
+            res.cookie("auth_google_token",token,{httpOnly:true})
+            .status(200)
+            .json(rest);
+        }
+    }
+    catch(error)
+    {
+        next(error);
+    }
 }
