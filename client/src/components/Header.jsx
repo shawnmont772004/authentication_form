@@ -3,7 +3,7 @@ import {Link} from "react-router-dom"
 import {useSelector} from "react-redux";
 
 function Header() {
-  const {currentUser}=useSelector((state)=>state.user);
+  const {currentUser}=useSelector((state)=>state.user)
   return (
     <>
     <div className="p-8 flex  justify-between items-center bg-gradient-to-b from-black to-gray-800  shadow-lg  text-white ">
