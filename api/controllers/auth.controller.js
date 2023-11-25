@@ -54,7 +54,7 @@ export const googleAuthController=async(req,res,next)=>{
             const token= jwt.sign({id:existUser._id},process.env.JWT_AUTH_TOKEN_GENERATE_KEY);
             const {password : pp, phoneNo:pn , ...rest} = existUser._doc
             res
-            .cookie("auth_google_token",token,{httpOnly:true})
+            .cookie("auth_token",token,{httpOnly:true})
             .status(200)
             .json(rest);
         }
@@ -79,7 +79,7 @@ export const googleAuthController=async(req,res,next)=>{
             }
             const token=jwt.sign({id:newUser._id},process.env.JWT_AUTH_TOKEN_GENERATE_KEY);
             const {password : pp , ...rest} = newUser._doc;
-            res.cookie("auth_google_token",token,{httpOnly:true})
+            res.cookie("auth_token",token,{httpOnly:true})
             .status(200)
             .json(rest);
         }
